@@ -5,28 +5,33 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.comento.project.board.BoardVO;
 import com.comento.project.board.service.BoardService;
 
+// Lombok - dependency 의존성 필요
+// @RequiredArgsConstructor
 @Controller
 public class BoardController {
-	
+
 	@Inject
 	private BoardService boardService;
-	
+
 	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
 	public void listAll(Model model) throws Exception {
 		model.addAttribute("list", boardService.listAll());
 	}
 	
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public void registerView() {
+	@GetMapping("/register")
+	public String registerView() {
+		return "register";
 	}
 	
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@PostMapping("/register")
 	public String registerAction(BoardVO board) throws Exception {
 		boardService.register(board);
 		return "redirect:/listAll";
